@@ -51,25 +51,56 @@ Tech Stack
 
 Data Preprocessing/Cleaning
 ---
-* Irrelevant:
-  * Removed ID and event number columns since the General Offense Number can be used as the unique identifier for each event.
-  * Time stamp is not neccesary for the study.
-* Redundant: 
-  * Event Clearing Subgroup, Event Clearing Description, Initial Type Description/Subgroup/Group are already explained by Event Clearing Group.
-* Missing Data:
-  * Scene Time is not all populated and therefore, removed.
-  * One observation is removed due to missing data in district/sector feature which is important in the analysis. 
+#### Irrelevant:
+Removed customerID variable since it is not needed.
+```r
+cdf$customerID <- NULL
+```
 
-Data Visualization
----
-![Districts](https://github.com/sangtvo/Seattle-PD-Funding-Eligibility/blob/main/images/Districts.png?raw=true)
-![AvgNumPerEvent](https://github.com/sangtvo/Seattle-PD-Funding-Eligibility/blob/main/images/Average%20Number%20of%20Officers%20Per%20Event.png?raw=true)
-![AvgNumPerZone](https://github.com/sangtvo/Seattle-PD-Funding-Eligibility/blob/main/images/Average%20Number%20of%20Officers%20Per%20Zone.png?raw=true)
-![NumofIncidentsbyDate](https://github.com/sangtvo/Seattle-PD-Funding-Eligibility/blob/main/images/Number%20of%20Incidents%20by%20Date.png?raw=true)
-![NumofIncidentsbyDistrict](https://github.com/sangtvo/Seattle-PD-Funding-Eligibility/blob/main/images/Num%20of%20Incidents%20by%20District.png?raw=true)
-![NumofIncidentsByEventType](https://github.com/sangtvo/Seattle-PD-Funding-Eligibility/blob/main/images/Num%20of%20Incidents%20by%20Event.png?raw=true)
+#### Rcoding: 
+Recode some of the categorical variables for simplicity.
+```r
+cdf$SeniorCitizen <- as.factor(mapvalues(cdf$SeniorCitizen, from=c("0","1"), to=c("No", "Yes")))
+cdf$MultipleLines <- as.factor(mapvalues(cdf$MultipleLines, from=c("No phone service"), to=c("No")))
 
-Data Analysis
+for (i in 9:14){
+  cdf[,i] <- as.factor(mapvalues(cdf[,i], from=c("No internet service"), to=c("No")))
+}
+```
+
+Recode the dependent variable as a factor in the clean data frame instead of characters.
+```r
+cdf[, 'Churn'] <- as.factor(cdf[, 'Churn'])
+```
+
+#### Missing Data:
+Checking for missing data.
+```r
+sapply(df, function(x) sum(is.na(x)))
+```
+```
+      customerID           gender    SeniorCitizen          Partner       Dependents           tenure     PhoneService    MultipleLines  InternetService 
+               0                0                0                0                0                0                0                0                0 
+  OnlineSecurity     OnlineBackup DeviceProtection      TechSupport      StreamingTV  StreamingMovies         Contract PaperlessBilling    PaymentMethod 
+               0                0                0                0                0                0                0                0                0 
+  MonthlyCharges     TotalCharges            Churn 
+               0               11                0 
+```
+
+Calculating the percentage of missing values on TotalCharges variable.
+```r
+sum(is.na(df$TotalCharges))/nrow(df)
+```
+```
+[1] 0.001561834
+```
+
+Since the data has 0.16% missing data in the TotalCharges variable, a new data frame is created to remove the missing values.
+```r
+cdf <- na.omit(df)
+```
+
+Exploratory Data Analysis
 ---
 * The data is dated from March 26, 2016 to March 28, 2016 which happens to be a holiday weekend, Easter Sunday. By looking at the number of events per day, one will notice that there is a high level of activity on March 27, 2016, the day before Easter Sunday. This high volume of activity shows that there are many active people on the streets or at home, possibly preparing for family gatherings which can include non- resident family members traveling to Seattle. Such events can include Easter hunts, attending mass at a cathedral, or enjoying an Easter brunch during this time. With an increase amount of people and activity in the area, it is more likely that more incidents will be reported than any other weekend.
 * The top 3 incidents are disturbances, traffic related calls, and suspicious circumstances. It is highly likely that these incidents occur due to congested traffic and overflowing of family gatherings. As Seattle is becoming a booming city in the tech hub world, companies are expanding their headquarters and bringing talented employees across the globe. In turn, homelessness is increasing due to unlivable wages and high rental/home costs (Balk 2019).
