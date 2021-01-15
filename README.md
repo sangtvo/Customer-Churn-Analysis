@@ -100,11 +100,37 @@ Since the data has 0.16% missing data in the TotalCharges variable, a new data f
 cdf <- na.omit(df)
 ```
 
+The final clean data frame: 
+```r
+summary(cdf)
+```
+```
+    gender          SeniorCitizen   Partner           Dependents            tenure      PhoneService       MultipleLines InternetService   
+ Length:7032        No :5890      Length:7032        Length:7032        Min.   : 1.00   Length:7032        No :4065      Length:7032       
+ Class :character   Yes:1142      Class :character   Class :character   1st Qu.: 9.00   Class :character   Yes:2967      Class :character  
+ Mode  :character                 Mode  :character   Mode  :character   Median :29.00   Mode  :character                 Mode  :character  
+                                                                        Mean   :32.42                                                      
+                                                                        3rd Qu.:55.00                                                      
+                                                                        Max.   :72.00                                                      
+ OnlineSecurity OnlineBackup DeviceProtection TechSupport StreamingTV StreamingMovies   Contract         PaperlessBilling   PaymentMethod     
+ No :5017       No :4607     No :4614         No :4992    No :4329    No :4301        Length:7032        Length:7032        Length:7032       
+ Yes:2015       Yes:2425     Yes:2418         Yes:2040    Yes:2703    Yes:2731        Class :character   Class :character   Class :character  
+                                                                                      Mode  :character   Mode  :character   Mode  :character  
+                                                                                                                                              
+                                                                                                                                              
+                                                                                                                                              
+ MonthlyCharges    TotalCharges    Churn     
+ Min.   : 18.25   Min.   :  18.8   No :5163  
+ 1st Qu.: 35.59   1st Qu.: 401.4   Yes:1869  
+ Median : 70.35   Median :1397.5             
+ Mean   : 64.80   Mean   :2283.3             
+ 3rd Qu.: 89.86   3rd Qu.:3794.7             
+ Max.   :118.75   Max.   :8684.8             
+```
+
 Exploratory Data Analysis
 ---
-* The data is dated from March 26, 2016 to March 28, 2016 which happens to be a holiday weekend, Easter Sunday. By looking at the number of events per day, one will notice that there is a high level of activity on March 27, 2016, the day before Easter Sunday. This high volume of activity shows that there are many active people on the streets or at home, possibly preparing for family gatherings which can include non- resident family members traveling to Seattle. Such events can include Easter hunts, attending mass at a cathedral, or enjoying an Easter brunch during this time. With an increase amount of people and activity in the area, it is more likely that more incidents will be reported than any other weekend.
-* The top 3 incidents are disturbances, traffic related calls, and suspicious circumstances. It is highly likely that these incidents occur due to congested traffic and overflowing of family gatherings. As Seattle is becoming a booming city in the tech hub world, companies are expanding their headquarters and bringing talented employees across the globe. In turn, homelessness is increasing due to unlivable wages and high rental/home costs (Balk 2019).
-* The largest number of events that has occurred is in sector H. As a quick sample test, googling the coordinates (47.600876, -122.33027) which is classified as a disturbance event, shows that this incident was located in the heart of downtown Seattle, Pioneer Square specifically. Due to the fact that downtown is a buzzing city with an immense amount of people, it would make sense that crimes are reported more often in this zone.
+
 
 Modeling
 ---
