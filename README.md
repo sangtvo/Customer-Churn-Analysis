@@ -147,6 +147,11 @@ Exploratory Data Analysis
   <tr><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bivar_5.png?raw=true"> </td>
 </table>
 
+Monthly Charges             |  Total Charges | Tenure
+:-------------------------:|:-------------------------:|:-------------------------:
+![MC](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/distribution_MonthlyCharges.png?raw=true)  |  ![TC](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/distribution_TotalCharges.png?raw=true) |
+![Tenure](https://github.com/sangtvo/Seattle-PD-Funding-Eligibility/blob/main/images/ANOVA.GIF?raw=true)
+
 
 Modeling
 ---
