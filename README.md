@@ -147,8 +147,8 @@ Exploratory Data Analysis
   <tr><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bivar_5.png?raw=true"> </td>
 </table>
 
-Monthly Charges             |  Total Charges |  Tenure
-:-------------------------:|:-------------------------:|:-------------------------:
+Monthly Charges             |  Total Charges
+:-------------------------:|:-------------------------:
 ![MC](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/distribution_MonthlyCharges.png?raw=true)  |  ![TC](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/distribution_TotalCharges.png?raw=true) |
 ![Tenure](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/distribution_tenure.png?raw=true)
 
