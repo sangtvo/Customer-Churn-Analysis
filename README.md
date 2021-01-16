@@ -100,7 +100,7 @@ Since the data has 0.16% missing data in the TotalCharges variable, a new data f
 cdf <- na.omit(df)
 ```
 
-The final clean data frame: 
+### The final clean data frame: 
 ```r
 summary(cdf)
 ```
@@ -127,6 +127,8 @@ summary(cdf)
  3rd Qu.: 89.86   3rd Qu.:3794.7             
  Max.   :118.75   Max.   :8684.8             
 ```
+
+For the full notebook, please check out Customer Churn Analysis.Rmd
 
 Exploratory Data Analysis
 ---
