@@ -153,6 +153,12 @@ Monthly Charges             |  Total Charges
 ![Tenure](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/distribution_tenure.png?raw=true)
 
 
+<table>
+  <tr><th colspan=2>Distribution of Continuous Independent Variables</th></tr>
+  <tr><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/distribution_MonthlyCharges.png?raw=true"> </td><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/distribution_TotalCharges.png?raw=true"> </td></tr>
+  <tr><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/distribution_tenure.png?raw=true"> </td><td>
+</table>
+
 Modeling
 ---
 A linear regression model is created by using Microsoft Excel Data Analysis Toolpak. The model provides a population regression parameter where the slope is β<sub>1</sub> = 1.491 and a y-intercept of β<sub>0</sub> = 21.914. The linear regression model displays an upward trend and indicates that the number of incidents in a specific district are closely related to the numbers of officers responding to the scene. However, there are two outliers that is skewing the regression line, (1,1) and (125,165) which may show that it is not necessarily the best fit.
