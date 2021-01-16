@@ -136,7 +136,7 @@ Exploratory Data Analysis
 <table>
   <tr><th colspan=2>Univariate Analysis</th></tr>
   <tr><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bar_1.png?raw=true"> </td><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bar_2.png?raw=true"> </td></tr>
-  <tr><td>![bar3](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bar_3.png?raw=true)</td><td> ![bar4](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bar_4.png?raw=true)</td></tr>
+  <tr><td> <img src="(https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bar_3.png?raw=true"> </td><td> <img src="(https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bar_4.png?raw=true"> </td></tr>
 </table>
 
 
