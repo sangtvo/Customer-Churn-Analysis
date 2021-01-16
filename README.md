@@ -172,6 +172,7 @@ Logistic Regression (Base) ROC Curve             |  Step-wise Logistic Regressio
 
 ![Top10](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/Top10_Variables.png?raw=true)
 
+![rfROC](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/rf_roc.png?raw=true)
 
 
 
