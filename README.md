@@ -52,7 +52,7 @@ Tech Stack
 Data Preprocessing/Cleaning
 ---
 #### Irrelevant:
-Removed customerID variable since it is not needed.
+Removed customerID variable since it is not necessary for the purpose of this analysis.
 ```r
 cdf$customerID <- NULL
 ```
@@ -139,11 +139,11 @@ Exploratory Data Analysis
   <tr><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bar_3.png?raw=true"> </td><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bar_4.png?raw=true"> </td></tr>
 </table>
 
-* Gender and partner are almost evenly split 50/50 and that 83.76% of the data are not senior citizens. 
-* 90.33% of the data have single phone lines, but in terms of extra services, there are roughly 70% of the customers that do not have online security and tech support. 
-* While internet service is a pretty common add-on with phone lines, the bar graph shows that fiber optic is a favorable internet service which accounts for 44.03% of the customers. 
-* Most customers are on a month-to-month contract (55.11%) and 33.63% of the customers pay their bill with an electronic check.
-* The churn rate of the data is 26.58%.
+* ***Gender*** and ***Partner*** are almost evenly split 50/50 and that 83.76% of the data are not ***SeniorCitizens***. 
+* 90.33% of the data have single ***PhoneService*** lines, but in terms of extra services, there are roughly 70% of the customers that do not have ***OnlineSecurity*** and ***TechSupport***. 
+* While ***InternetService*** is a pretty common add-on with phone lines, **fiber optic** is a favorable internet service which accounts for 44.03% of the customers. 
+* Most customers are on a **month-to-month** ***Contract*** (55.11%) and 33.63% of the customers pay their bill with an **electronic check**.
+* The ***Churn*** rate of the data is 26.58%.
 
 
 <table>
@@ -152,6 +152,17 @@ Exploratory Data Analysis
   <tr><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bivar_3.png?raw=true"> </td><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bivar_4.png?raw=true"> </td></tr>
   <tr><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bivar_5.png?raw=true"> </td>
 </table>
+
+* Gender percentages are almost similar and therefore, may not have influence on churn. 
+have hnand customers with phone service are more likely to churn than those who don’t. 
+* Online security and tech support have very similar percentages and perhaps they are somewhat correlated whether a customer is churning or not.
+* Online backup and device protection are similar indicating that they might be correlated with one another.
+* Month-to-month contract customers is higher than longer contracts, which makes sense because there is no obligation to stay longer if it was a month-to-month basis and can leave at any time. 
+* Customers with internet service are more likely to churn than those that don't have internet.
+  * Fiber optic churn rate is 3x higher than DSL and 9x without internet service.
+* Churn percentage is higher for customers who utilizes paperless billing option.
+* Customers who use electronic checks are almost 5x as high to churn compared to other payment method options.
+
 
 <table>
   <tr><th colspan=2>Distribution of Continuous Independent Variables</th></tr>
