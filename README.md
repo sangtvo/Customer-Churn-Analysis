@@ -57,7 +57,7 @@ Removed customerID variable since it is not needed.
 cdf$customerID <- NULL
 ```
 
-#### Rcoding: 
+#### Recoding: 
 Recode some of the categorical variables for simplicity.
 ```r
 cdf$SeniorCitizen <- as.factor(mapvalues(cdf$SeniorCitizen, from=c("0","1"), to=c("No", "Yes")))
@@ -138,6 +138,12 @@ Exploratory Data Analysis
   <tr><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bar_1.png?raw=true"> </td><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bar_2.png?raw=true"> </td></tr>
   <tr><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bar_3.png?raw=true"> </td><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bar_4.png?raw=true"> </td></tr>
 </table>
+
+* Gender and partner are almost evenly split 50/50 and that 83.76% of the data are not senior citizens. 
+* 90.33% of the data have single phone lines, but in terms of extra services, there are roughly 70% of the customers that do not have online security and tech support. 
+* While internet service is a pretty common add-on with phone lines, the bar graph shows that fiber optic is a favorable internet service which accounts for 44.03% of the customers. 
+* Most customers are on a month-to-month contract (55.11%) and 33.63% of the customers pay their bill with an electronic check.
+* The churn rate of the data is 26.58%.
 
 
 <table>
