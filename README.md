@@ -142,7 +142,7 @@ Exploratory Data Analysis
 * ***Gender*** and ***Partner*** are almost evenly split 50/50 and that 83.76% of the data are not ***SeniorCitizens***. 
 * 90.33% of the data have single ***PhoneService*** lines, but in terms of extra services, there are roughly 70% of the customers that do not have ***OnlineSecurity*** and ***TechSupport***. 
 * While ***InternetService*** is a pretty common add-on with phone lines, **fiber optic** is a favorable internet service which accounts for 44.03% of the customers. 
-* Most customers are on a **month-to-month** ***Contract*** (55.11%) and 33.63% of the customers pay their bill with an **electronic check**.
+* 55.11% of the customers are on a **month-to-month** ***Contract*** and 33.63% of the customers pay their bill with an **electronic check**.
 * The ***Churn*** rate of the data is 26.58%.
 
 
@@ -153,16 +153,15 @@ Exploratory Data Analysis
   <tr><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bivar_5.png?raw=true"> </td>
 </table>
 
-* Gender percentages are almost similar and therefore, may not have influence on churn. 
-have hnand customers with phone service are more likely to churn than those who don’t. 
-* Online security and tech support have very similar percentages and perhaps they are somewhat correlated whether a customer is churning or not.
-* Online backup and device protection are similar indicating that they might be correlated with one another.
-* Month-to-month contract customers is higher than longer contracts, which makes sense because there is no obligation to stay longer if it was a month-to-month basis and can leave at any time. 
-* Customers with internet service are more likely to churn than those that don't have internet.
-  * Fiber optic churn rate is 3x higher than DSL and 9x without internet service.
-* Churn percentage is higher for customers who utilizes paperless billing option.
-* Customers who use electronic checks are almost 5x as high to churn compared to other payment method options.
-
+* ***Gender*** percentages are almost similar and therefore, may not have influence on churn. 
+* ***OnlineSecurity*** and ***TechSupport*** have very similar percentages and perhaps they are somewhat correlated whether a customer is churning or not.
+* ***OnlineBackup*** and ***DeviceProtection*** are also similar indicating that they might be correlated with one another.
+* Customers with ***PhoneService*** are more likely to churn those who don't have service.
+* **Month-to-month** ***Contract*** customers are much higher than longer contracts, which makes sense because there is no obligation to stay longer if it was a month-to-month basis and can leave at any time. 
+* Customers with ***InternetService*** are more likely to churn than those that don't have internet.
+  * **Fiber optic** churn rate is 3x higher than **DSL** and 9x without internet service.
+* Churn percentage is higher for customers who utilizes ***PaperlessBilling*** option.
+* Customers who use **electronic checks** are almost 5x as high to churn compared to other ***PaymentMethod*** options.
 
 <table>
   <tr><th colspan=2>Distribution of Continuous Independent Variables</th></tr>
@@ -170,7 +169,20 @@ have hnand customers with phone service are more likely to churn than those who 
   <tr><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/distribution_tenure.png?raw=true"> </td><td>
 </table>
 
+* The number of customers who have ***MonthlyCharges*** of $25 or less are extremely high--it seems that $0-25 is a very common monthly charge.  
+  * The distributions starting around $30 per month is similar between customers who churned or not.
+* ***TotalCharges*** has a positive/right skew meaning that the right side of the distribution is longer or flatter. 
+  * Mean and median is greater than the mode.
+  * The frequency count at $2,500 total charges starts to decrease slowly in count and not as rapid. 
+* ***Tenure*** distributions are different between customers who churned or not. 
+  * For customers who churned, the distribution is positive/right skew which may indicate that the first 10 weeks or so, customers are more likely to cancel service.
+  * For customers who did not churn, the highest peak is 70 weeks (almost 6 years) which indicates that there is a large amount of customers who kept their service for at least 5 years. 
+
 ![Correlation](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/correlation.png?raw=true)
+
+* ***TotalCharges*** and ***tenure*** have a positive correlation which means that the correlation coefficient is greater than 0, but not a perfect correlation of 1.0 as colored in the correlation matrix above.
+  * Correlation coefficients are indicators of the strength of the linear relationship between two variables. 
+  * While there is a positive correlation, it does not mean that one causes the other. 
 
 <table>
   <tr><th colspan=2>Boxplots of Continuous Independent Variables</th></tr>
@@ -178,6 +190,10 @@ have hnand customers with phone service are more likely to churn than those who 
   <tr><td> <img src="https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/bp_tenure.png?raw=true"> </td><td>
 </table>
 
+* There are no obvious outliers in the continuous variables where there are values beyond the whiskers of the boxplots. 
+
+Modeling
+---
 Logistic Regression (Base) ROC Curve             |  Step-wise Logistic Regression ROC Curve
 :-------------------------:|:-------------------------:
 ![BaseLR](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/base_lr_roc.png?raw=true)  |  ![StepLR](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/step_roc.png?raw=true)
@@ -192,9 +208,6 @@ Logistic Regression (Base) ROC Curve             |  Step-wise Logistic Regressio
 ![rfROC](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/rf_roc.png?raw=true)
 
 
-
-Modeling
----
 A linear regression model is created by using Microsoft Excel Data Analysis Toolpak. The model provides a population regression parameter where the slope is β<sub>1</sub> = 1.491 and a y-intercept of β<sub>0</sub> = 21.914. The linear regression model displays an upward trend and indicates that the number of incidents in a specific district are closely related to the numbers of officers responding to the scene. However, there are two outliers that is skewing the regression line, (1,1) and (125,165) which may show that it is not necessarily the best fit.
 
 By calculating R<sup>2</sup> for the model with and without outliers, we can see how much variability of the response data around its mean. Ideally, the higher the R<sup>2</sup>, closer to 1, the better the model fits the data. However, there are some limitations with R<sup>2</sup> and sometimes does not indicate whether a regression model is adequate. Therefore, we must also consider sum of absolute error (SAE) calculation as it shows how far the regression line is from the actual data points. The lower the SAE, the better the fit.
