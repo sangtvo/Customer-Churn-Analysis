@@ -308,6 +308,133 @@ lr_accuracy
 [1] 0.8140417
 ```
 
+Calculcate the Receiver Operating Character (ROC) Curve.
+```r
+lr_roc <- roc(train_d$Churn, lr_prob2)
+plot(lr_roc, col='Blue', main="ROC Curve")
+auc(lr_roc)
+```
+```
+Area under the curve: 0.8446
+```
+![BaseLR](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/base_lr_roc.png?raw=true)
+ROC is a probability curve that shows the performance of a classification model at all classification thresholds. The x-axis is the false positive rate and the y-axis is the true positive rate. The AUC represents the measure of separability that shows how much the model can distinguish between classes. The higher the AUC, the better at predicting 0s and 1s. AUC ranges in value from 0 to 1 and a model  with predictions are 100% wrong has an AUC of 0 and predictions that are 100% correct has an AUC of 1.
+
+The accuracy of the base regression model is 81.40% with AUC of 84.46%. The model has a 84.46% chance that it will distinguish between a positive and negative class. 
+
+However, we can improve the base model by using the stepAIC for variable selection. This method will add or remove variables and comes up with a final set of variables. This method simplifies the model and gives the most parsimonious model. 
+
+```r
+lrstep_model <- MASS::stepAIC(lr_model, trace=0)
+summary(lrstep_model)
+```
+```
+Call:
+glm(formula = Churn ~ SeniorCitizen + Partner + tenure + MultipleLines + 
+    InternetService + OnlineSecurity + StreamingTV + StreamingMovies + 
+    Contract + PaperlessBilling + PaymentMethod + MonthlyCharges + 
+    TotalCharges, family = binomial(link = "logit"), data = train_d)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.8885  -0.6953  -0.2900   0.7595   3.2334  
+
+Coefficients:
+                                       Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                           1.027e+00  3.249e-01   3.161 0.001571 ** 
+SeniorCitizenYes                      1.436e-01  9.914e-02   1.449 0.147360    
+PartnerYes                           -1.189e-01  8.345e-02  -1.425 0.154237    
+tenure                               -6.222e-02  7.440e-03  -8.364  < 2e-16 ***
+MultipleLinesYes                      3.800e-01  1.022e-01   3.719 0.000200 ***
+InternetServiceFiber optic            1.571e+00  2.119e-01   7.411 1.25e-13 ***
+InternetServiceNo                    -1.480e+00  2.095e-01  -7.064 1.62e-12 ***
+OnlineSecurityYes                    -2.223e-01  1.059e-01  -2.098 0.035877 *  
+StreamingTVYes                        5.151e-01  1.145e-01   4.500 6.81e-06 ***
+StreamingMoviesYes                    5.792e-01  1.142e-01   5.071 3.97e-07 ***
+ContractOne year                     -8.506e-01  1.294e-01  -6.572 4.95e-11 ***
+ContractTwo year                     -1.495e+00  2.011e-01  -7.435 1.05e-13 ***
+PaperlessBillingYes                   3.041e-01  8.822e-02   3.447 0.000567 ***
+PaymentMethodCredit card (automatic) -8.973e-03  1.355e-01  -0.066 0.947215    
+PaymentMethodElectronic check         2.931e-01  1.123e-01   2.611 0.009029 ** 
+PaymentMethodMailed check            -1.090e-01  1.365e-01  -0.798 0.424728    
+MonthlyCharges                       -3.322e-02  6.473e-03  -5.132 2.87e-07 ***
+TotalCharges                          3.694e-04  8.407e-05   4.394 1.11e-05 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 5702.8  on 4923  degrees of freedom
+Residual deviance: 4121.1  on 4906  degrees of freedom
+AIC: 4157.1
+
+Number of Fisher Scoring iterations: 6
+```
+
+Checking variance inflation factor (VIF) for multicollinearity.
+```r
+rms::vif(lrstep_model)
+```
+```
+                    SeniorCitizenYes                           PartnerYes                               tenure                     MultipleLinesYes 
+                            1.101765                             1.126056                            16.066630                             1.740315 
+          InternetServiceFiber optic                    InternetServiceNo                    OnlineSecurityYes                       StreamingTVYes 
+                            7.288274                             2.719026                             1.282502                             2.163958 
+                  StreamingMoviesYes                     ContractOne year                     ContractTwo year                  PaperlessBillingYes 
+                            2.151208                             1.289170                             1.317572                             1.141450 
+PaymentMethodCredit card (automatic)        PaymentMethodElectronic check            PaymentMethodMailed check                       MonthlyCharges 
+                            1.623259                             2.127947                             2.067715                            20.886103 
+                        TotalCharges 
+                           20.728399 
+```
+
+Remove VIF > 10 and re-run the step-wise logistic regression model. In addition, I manually remove the least significant variables with the final output as (see R markdown for full code):
+```
+Call:
+glm(formula = Churn ~ tenure + InternetService + OnlineSecurity + 
+    StreamingTV + StreamingMovies + Contract + PaperlessBilling, 
+    family = binomial(link = "logit"), data = train_d)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.7869  -0.6783  -0.3040   0.7767   3.1201  
+
+Coefficients:
+                           Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                -0.52568    0.09620  -5.464 4.65e-08 ***
+tenure                     -0.03262    0.00244 -13.367  < 2e-16 ***
+InternetServiceFiber optic  0.92930    0.09092  10.221  < 2e-16 ***
+InternetServiceNo          -0.83840    0.14600  -5.742 9.34e-09 ***
+OnlineSecurityYes          -0.40620    0.09849  -4.125 3.71e-05 ***
+StreamingTVYes              0.27410    0.09214   2.975  0.00293 ** 
+StreamingMoviesYes          0.37260    0.09227   4.038 5.39e-05 ***
+ContractOne year           -0.97795    0.12628  -7.744 9.63e-15 ***
+ContractTwo year           -1.64444    0.19597  -8.391  < 2e-16 ***
+PaperlessBillingYes         0.35244    0.08681   4.060 4.91e-05 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 5702.8  on 4923  degrees of freedom
+Residual deviance: 4187.3  on 4914  degrees of freedom
+AIC: 4207.3
+
+Number of Fisher Scoring iterations: 6
+```
+
+Confusion matrix for the step-wise logistic regression model:
+        Actual
+Predicted   No  Yes
+      No  1386  256
+      Yes  162  304
+
+* Specificity = 1385/(1385+163) = 0.8953
+* Sensitivity = 331/(229+331) = 0.5428
+* -PV = 1385/(1385+229) = 0.8440
+* +PV = 331/(163+331) = 0.6423
+
+The accuracy of the model is 80.17% and AUC of 83.77%. 
 
 
 Decision Tree
