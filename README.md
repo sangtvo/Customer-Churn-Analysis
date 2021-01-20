@@ -196,6 +196,9 @@ Logistic Regression
 ---
 Logistic Regression (Base) ROC Curve             |  Step-wise Logistic Regression ROC Curve
 :-------------------------:|:-------------------------:
+![BaseLR](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/base_lr_roc.png?raw=true)  |  ![StepLR](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/step_roc.png?raw=true)
+
+
 The data frame is split 70% training and 30% testing data.
 ```r
 set.seed(123)
@@ -204,7 +207,7 @@ train_d <- cdf[train_test_data,]
 test_d <- cdf[-train_test_data,]
 ```
 
-Run the base logistic regression model.
+Run the base logistic regression model with all variables.
 ```r
 lr_model <- glm(Churn ~., data=train_d, family=binomial(link='logit'))
 summary(lr_model)
@@ -254,6 +257,11 @@ AIC: 4165.1
 
 Number of Fisher Scoring iterations: 6
 ```
+* Variables that are significant are: tenure, contract, payment method electronic check, and total charges.
+
+Akaike Information Criterion (AIC) evaluates how well a model fits the data without over-fitting. The AIC score rewards models that have a high goodness-of-fit score, but penalizes when models become more complex. AIC score is useful when comparing AIC scores of competing models and the lower the AIC score, the better the fit (more parsimonious model). 
+
+The formula is `-2log-likelihood + kn<sub>par</sub>`
 
 Compute the confusion matrix table.
 ```r
@@ -282,7 +290,7 @@ lr_accuracy
 [1] 0.8140417
 ```
 
-![BaseLR](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/base_lr_roc.png?raw=true)  |  ![StepLR](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/step_roc.png?raw=true)
+
 
 Decision Tree
 ---
