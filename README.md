@@ -261,8 +261,6 @@ Number of Fisher Scoring iterations: 6
 
 Akaike Information Criterion (AIC) evaluates how well a model fits the data without over-fitting. The AIC score rewards models that have a high goodness-of-fit score, but penalizes when models become more complex. AIC score is useful when comparing AIC scores of competing models and the lower the AIC score, the better the fit (more parsimonious model). 
 
-The formula is -2 log-likelihood + &kappa;n<sub>p</sub> where n<sub>p</sub> represents the number of parameters in the fitted model and `k=log(n)` where `n` is the number of observations. 
-
 Compute the confusion matrix table.
 ```r
 lr_prob1 <- predict(lr_model, test_d, type="response")
@@ -276,6 +274,22 @@ Predicted   No  Yes
       No  1385  229
       Yes  163  331
 ```
+```
+         Actual
+Predicted   No  Yes
+      No    TN  FN
+      Yes   FP  TP
+```
+```
+Specificity = TN/(TN + FP)
+Sensitivity = TP / (FN + TP)
+Negative Predicted Value (-PV) = TN/(TN+FN)
+Positive Predicted Value (+PV or precision) = TP/(FP+TP)
+```
+* Specificity = 1385/(1385+163) = 0.8947
+* Sensitivity = 331/(229+331) = 0.5910
+* -PV = 1385/(1385+229) = 0.8581
+* +PV = 331/(163+331) = 0.6700
 
 Calculate the accuracy.
 ```r
