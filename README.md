@@ -192,17 +192,107 @@ Exploratory Data Analysis
 
 * There are no obvious outliers in the continuous variables where there are values beyond the whiskers of the boxplots. 
 
-Logistic Regression Analysis
+Logistic Regression
 ---
 Logistic Regression (Base) ROC Curve             |  Step-wise Logistic Regression ROC Curve
 :-------------------------:|:-------------------------:
+The data frame is split 70% training and 30% testing data.
+```r
+set.seed(123)
+train_test_data <- createDataPartition(cdf$Churn,p=0.7,list=FALSE)
+train_d <- cdf[train_test_data,]
+test_d <- cdf[-train_test_data,]
+```
+
+Run the base logistic regression model.
+```r
+lr_model <- glm(Churn ~., data=train_d, family=binomial(link='logit'))
+summary(lr_model)
+```
+```
+Call:
+glm(formula = Churn ~ ., family = binomial(link = "logit"), data = train_d)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.8637  -0.6953  -0.2890   0.7553   3.2200  
+
+Coefficients:
+                                       Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                           1.0746695  0.9571525   1.123 0.261532    
+genderMale                           -0.0482269  0.0771304  -0.625 0.531797    
+SeniorCitizenYes                      0.1200467  0.1014491   1.183 0.236683    
+PartnerYes                           -0.0910761  0.0918164  -0.992 0.321228    
+DependentsYes                        -0.0843260  0.1068161  -0.789 0.429849    
+tenure                               -0.0621135  0.0074487  -8.339  < 2e-16 ***
+PhoneServiceYes                       0.0233358  0.7635434   0.031 0.975618    
+MultipleLinesYes                      0.3794100  0.2078464   1.825 0.067935 .  
+InternetServiceFiber optic            1.5613737  0.9372764   1.666 0.095741 .  
+InternetServiceNo                    -1.5047493  0.9480893  -1.587 0.112481    
+OnlineSecurityYes                    -0.2149292  0.2098780  -1.024 0.305804    
+OnlineBackupYes                       0.0008494  0.2053088   0.004 0.996699    
+DeviceProtectionYes                   0.1177891  0.2084585   0.565 0.572041    
+TechSupportYes                       -0.1280168  0.2128673  -0.601 0.547579    
+StreamingTVYes                        0.5187839  0.3819512   1.358 0.174386    
+StreamingMoviesYes                    0.5783808  0.3840289   1.506 0.132045    
+ContractOne year                     -0.8451411  0.1304035  -6.481 9.11e-11 ***
+ContractTwo year                     -1.4644194  0.2039949  -7.179 7.04e-13 ***
+PaperlessBillingYes                   0.3020753  0.0884590   3.415 0.000638 ***
+PaymentMethodCredit card (automatic) -0.0093796  0.1357499  -0.069 0.944914    
+PaymentMethodElectronic check         0.2897469  0.1124649   2.576 0.009985 ** 
+PaymentMethodMailed check            -0.1002695  0.1367827  -0.733 0.463524    
+MonthlyCharges                       -0.0336622  0.0372618  -0.903 0.366314    
+TotalCharges                          0.0003653  0.0000844   4.328 1.50e-05 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 5702.8  on 4923  degrees of freedom
+Residual deviance: 4117.1  on 4900  degrees of freedom
+AIC: 4165.1
+
+Number of Fisher Scoring iterations: 6
+```
+
+Compute the confusion matrix table.
+```r
+lr_prob1 <- predict(lr_model, test_d, type="response")
+lr_pred1 <- ifelse(lr_prob1 > 0.5,"Yes","No")
+
+table(Predicted=lr_pred1, Actual=test_d$Churn)
+```
+```
+         Actual
+Predicted   No  Yes
+      No  1385  229
+      Yes  163  331
+```
+
+Calculate the accuracy.
+```r
+lr_prob2 <- predict(lr_model, train_d, type="response")
+lr_pred2 <- ifelse(lr_prob2 > 0.5,"Yes","No")
+lr_tab1 <- table(Predicted = lr_pred2, Actual = train_d$Churn)
+lr_tab2 <- table(Predicted = lr_pred1, Actual = test_d$Churn)
+lr_accuracy <- sum(diag(lr_tab2))/sum(lr_tab2)
+lr_accuracy
+```
+```
+[1] 0.8140417
+```
+
 ![BaseLR](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/base_lr_roc.png?raw=true)  |  ![StepLR](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/step_roc.png?raw=true)
 
-
+Decision Tree
+---
 ![Dtree](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/dtree.png?raw=true)
 
 ![DtreeROC](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/dtree_roc.png?raw=true)
 
+
+Random Forest
+---
 ![Top10](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/Top10_Variables.png?raw=true)
 
 ![rfROC](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/rf_roc.png?raw=true)
