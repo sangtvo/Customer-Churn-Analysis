@@ -367,7 +367,7 @@ AIC: 4157.1
 Number of Fisher Scoring iterations: 6
 ```
 
-Checking variance inflation factor (VIF) for multicollinearity. Multicollinearity is when an independent variable is highly correlated with one or more of the other independent variables. This is an issue because it undermines the significant of the independent variable. 
+Checking variance inflation factor (VIF) for **multicollinearity**. Multicollinearity is when an independent variable is highly correlated with one or more of the other independent variables. This is an issue because it undermines the significance of the independent variable. 
 ```r
 rms::vif(lrstep_model)
 ```
@@ -418,6 +418,7 @@ AIC: 4207.3
 
 Number of Fisher Scoring iterations: 6
 ```
+* We can see that the most significant variables are tenure, internet service, online security, streaming tv and movies, contract, and paperless billing. 
 
 Confusion matrix for the step-wise logistic regression model:
 ```
