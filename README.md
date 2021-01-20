@@ -318,7 +318,9 @@ ROC is a probability curve that shows the performance of a classification model 
 
 The accuracy of the base regression model is 81.40% with AUC of 84.46%. The model has a 84.46% chance that it will distinguish between a positive and negative class. 
 
-However, we can improve the base model by using the stepAIC for variable selection. This method will add or remove variables and comes up with a final set of variables. This method simplifies the model and gives the most parsimonious model. 
+Step-wise Logistic Regression
+---
+We can improve the base model by using the stepAIC for variable selection. This method will add or remove variables and comes up with a final set of variables. This method simplifies the model and gives the most parsimonious model. 
 
 ```r
 lrstep_model <- MASS::stepAIC(lr_model, trace=0)
@@ -445,8 +447,47 @@ Between the two models, the best parsimonious model would be the step-wise model
 
 Decision Tree
 ---
+Run the decision tree.
+```r
+dtree_model <- rpart(Churn ~., data=train_d, method="class")
+rpart.plot(dtree_model)
+```
 ![Dtree](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/dtree.png?raw=true)
 
+```r
+dtree_prob1 <- predict(dtree_model, test_d)
+dtree_pred1 <- ifelse(dtree_prob1[,2] > 0.5, "Yes", "No")
+table(Predicted=dtree_pred1, Actual=test_d$Churn)
+```
+```
+         Actual
+Predicted   No  Yes
+      No  1384  279
+      Yes  164  281
+```
+
+Calculate the accuracy of the decision tree.
+```r
+dtree_prob2 <- predict(dtree_model, train_d)
+dtree_pred2 <- ifelse(dtree_prob2[,2] > 0.5,"Yes","No")
+dtree_tab1 <- table(Predicted=dtree_pred2, Actual=train_d$Churn)
+dtree_tab2 <- table(Predicte =dtree_pred1, Actual=test_d$Churn)
+dtree_accuracy <- sum(diag(dtree_tab2))/sum(dtree_tab2)
+dtree_accuracy
+```
+```
+[1] 0.7898482
+```
+
+Create the ROC curve and calculcate the AUC.
+```r
+dtree_roc <- roc(train_d$Churn, dtree_prob2[,2])
+plot(dtree_roc, col='Blue', main="ROC Curve")
+auc(dtree_roc)
+```
+```
+Area under the curve: 0.8125
+```
 ![DtreeROC](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/dtree_roc.png?raw=true)
 
 
