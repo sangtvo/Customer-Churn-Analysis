@@ -441,6 +441,8 @@ Logistic Regression (Base) ROC Curve             |  Step-wise Logistic Regressio
 AUC = 84.46% | AUC = 83.77%
 Accuracy = 81.40% | Accuracy = 80.17%
 
+Between the two models, the best parsimonious model would be the step-wise model despite a lower accuracy than the base model. This model is preferrable since it only includes the least variables that are highly significant with a lower AIC score. 
+
 Decision Tree
 ---
 ![Dtree](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/dtree.png?raw=true)
