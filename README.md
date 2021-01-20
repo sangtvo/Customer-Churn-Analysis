@@ -194,11 +194,6 @@ Exploratory Data Analysis
 
 Logistic Regression
 ---
-Logistic Regression (Base) ROC Curve             |  Step-wise Logistic Regression ROC Curve
-:-------------------------:|:-------------------------:
-![BaseLR](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/base_lr_roc.png?raw=true)  |  ![StepLR](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/step_roc.png?raw=true)
-
-
 The data frame is split 70% training and 30% testing data.
 ```r
 set.seed(123)
@@ -318,6 +313,7 @@ auc(lr_roc)
 Area under the curve: 0.8446
 ```
 ![BaseLR](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/base_lr_roc.png?raw=true)
+
 ROC is a probability curve that shows the performance of a classification model at all classification thresholds. The x-axis is the false positive rate and the y-axis is the true positive rate. The AUC represents the measure of separability that shows how much the model can distinguish between classes. The higher the AUC, the better at predicting 0s and 1s. AUC ranges in value from 0 to 1 and a model  with predictions are 100% wrong has an AUC of 0 and predictions that are 100% correct has an AUC of 1.
 
 The accuracy of the base regression model is 81.40% with AUC of 84.46%. The model has a 84.46% chance that it will distinguish between a positive and negative class. 
@@ -424,6 +420,7 @@ Number of Fisher Scoring iterations: 6
 ```
 
 Confusion matrix for the step-wise logistic regression model:
+
         Actual
 Predicted   No  Yes
       No  1386  256
@@ -436,6 +433,13 @@ Predicted   No  Yes
 
 The accuracy of the model is 80.17% and AUC of 83.77%. 
 
+
+***Comparison Between Base Logistic Regression & Step-Wise Logistic Regression
+Logistic Regression (Base) ROC Curve             |  Step-wise Logistic Regression ROC Curve
+:-------------------------:|:-------------------------:
+![BaseLR](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/base_lr_roc.png?raw=true)  |  ![StepLR](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/step_roc.png?raw=true)
+AUC = 84.46% | AUC = 83.77%
+Accuracy = 81.40% | Accuracy = 80.17%
 
 Decision Tree
 ---
