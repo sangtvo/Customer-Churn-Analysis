@@ -291,6 +291,10 @@ Positive Predicted Value (+PV or precision) = TP/(FP+TP)
 * -PV = 1385/(1385+229) = 0.8581
 * +PV = 331/(163+331) = 0.6700
 
+Validation measures are specificity and sensitivity. Sensitivity is the true positive rate where the proportion of test in question is correctly classified. Specificity is the true negative rate where the proportion of negative test in question is correctly classified. Sensitivity and specificity are inversely proportional, meaning that as sensitivity increases, the specificity decreases and vice versa. 
+
+Positive predicted value, or precision, tells how often a positive test represents a true positive. Negative predicted value tells how often a negeative test represents a true negative. 
+
 Calculate the accuracy.
 ```r
 lr_prob2 <- predict(lr_model, train_d, type="response")
