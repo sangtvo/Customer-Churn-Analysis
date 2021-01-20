@@ -261,23 +261,7 @@ Number of Fisher Scoring iterations: 6
 
 Akaike Information Criterion (AIC) evaluates how well a model fits the data without over-fitting. The AIC score rewards models that have a high goodness-of-fit score, but penalizes when models become more complex. AIC score is useful when comparing AIC scores of competing models and the lower the AIC score, the better the fit (more parsimonious model). 
 
-The formula is <math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mo>&#x2212;</mo>
-  <mn>2</mn>
-  <mstyle displaystyle="false" scriptlevel="0">
-    <mtext>log-likelihood</mtext>
-  </mstyle>
-  <mo>+</mo>
-  <mi>k</mi>
-  <msub>
-    <mi>n</mi>
-    <mrow>
-      <mi>p</mi>
-      <mi>a</mi>
-      <mi>r</mi>
-    </mrow>
-  </msub>
-</math> 
+The formula is -2 \mbox{log-likelihood} + k n_{par}
 
 Compute the confusion matrix table.
 ```r
