@@ -426,13 +426,12 @@ Predicted   No  Yes
       No  1386  256
       Yes  162  304
 ```
-* Specificity = 1385/(1385+163) = 0.8953
-* Sensitivity = 331/(229+331) = 0.5428
-* -PV = 1385/(1385+229) = 0.8440
-* +PV = 331/(163+331) = 0.6423
+* Specificity = 1386/(1386+162) = 0.8953
+* Sensitivity = 304/(256+304) = 0.5428
+* -PV = 1386/(1386+256) = 0.8440
+* +PV = 304/(162+304) = 0.6423
 
 The accuracy of the model is 80.17% and AUC of 83.77%. 
-
 
 **Comparison Between Base Logistic Regression & Step-Wise Logistic Regression**
 Logistic Regression (Base) ROC Curve             |  Step-wise Logistic Regression ROC Curve
