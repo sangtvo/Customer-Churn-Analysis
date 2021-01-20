@@ -192,7 +192,7 @@ Exploratory Data Analysis
 
 * There are no obvious outliers in the continuous variables where there are values beyond the whiskers of the boxplots. 
 
-Modeling
+Logistic Regression Analysis
 ---
 Logistic Regression (Base) ROC Curve             |  Step-wise Logistic Regression ROC Curve
 :-------------------------:|:-------------------------:
