@@ -384,7 +384,7 @@ PaymentMethodCredit card (automatic)        PaymentMethodElectronic check       
                            20.728399 
 ```
 
-Remove VIF > 10 and re-run the step-wise logistic regression model. In addition, I manually remove the least significant variables with the final output as (see R markdown for full code):
+Remove VIF > 10 and re-run the step-wise logistic regression model. In addition, I manually remove the least significant variables with the final output (see R markdown for full code):
 ```
 Call:
 glm(formula = Churn ~ tenure + InternetService + OnlineSecurity + 
@@ -420,12 +420,12 @@ Number of Fisher Scoring iterations: 6
 ```
 
 Confusion matrix for the step-wise logistic regression model:
-
+```
         Actual
 Predicted   No  Yes
       No  1386  256
       Yes  162  304
-
+```
 * Specificity = 1385/(1385+163) = 0.8953
 * Sensitivity = 331/(229+331) = 0.5428
 * -PV = 1385/(1385+229) = 0.8440
@@ -434,7 +434,7 @@ Predicted   No  Yes
 The accuracy of the model is 80.17% and AUC of 83.77%. 
 
 
-***Comparison Between Base Logistic Regression & Step-Wise Logistic Regression
+**Comparison Between Base Logistic Regression & Step-Wise Logistic Regression**
 Logistic Regression (Base) ROC Curve             |  Step-wise Logistic Regression ROC Curve
 :-------------------------:|:-------------------------:
 ![BaseLR](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/base_lr_roc.png?raw=true)  |  ![StepLR](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/step_roc.png?raw=true)
