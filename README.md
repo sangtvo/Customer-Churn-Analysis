@@ -27,12 +27,14 @@ Table of Contents
 
 General Information
 ---
-The project is part of a graduate course (_Data Mining and Analytics II_) at Western Governor's University. The raw data set contains 7,043 observations and 21 features. To expand the project even further (originally binary logistic regression), decision trees and random forest analysis are added.
+The project is part of a graduate course (_Data Mining and Analytics II_) at Western Governor's University. The raw data set contains 7,043 observations and 21 features. 
+
+**To expand the project even further (originally binary logistic regression), decision trees and random forest analysis are added.**
 
 
 Summary
 ---
-The best fitted linear regression model is y = 1.491x + 21.914 which means that for every additional incident reported (x), you can expect officers on site to increase by an average of 1.491. The overall mean of the data is 1.889 which is below the 2.5 threshold and is not qualified for additional funding. In order to increase their eligibility for funding, the Seattle PD must focus on zones with average officers at scene that is less than or equal to 2 and the largest reported incident zones. There are 12 zones that need assistance and can lead to funding eligibility.
+The winning model is the **random forest** algorithm with an overall accuracy of 80.21% and AUC of 81.50%. This means that the model will correctly predict churn 80.21% of the time and there is a 81.50% chance that the model can distinguish between positive (churn) and negative (no churn) classes. In order for the telecommunications company to reduce the current churn rate of 26.58%, the company should focus on contracts (month-to-month specifically), tenure length, and total charges to start. The company should give incentives such as reduced pricing or discounted extra services for long-term customers to keep them from leaving to another competitor. 
 
 Tech Stack
 ---
@@ -599,7 +601,7 @@ Accuracy | 81.40% | 80.17% | 78.98% | 80.21%
 
 * The best model is the **random forest model** with an overall accuracy of 80.21% with an area under the curve of 81.50% meaning the model will correctly predict churn 80.21% of the time and there is a 81.50% chance that the model can distinguish between positive (churn) and negative (no churn) classes. 
 
-In a business perspective, it is more fitting to tackle the most important variables that causes customers to leaves. If the telecommunications wanted to reduce their churn rate, they would need to look into tenure length, contract length (month-to-month specifically), and total charges to start off based on the top 3 variables of the random forest model. Perhaps the company needs to lower the pricing or give incentives for customers to stay longer such as discounted extra services. While there may be some other minor indicators, it is a good objective as a business to focus the larger and easier predictors to mitigate the loss.   
+In a business perspective, it is more fitting to tackle the most important variables that causes customers to leave. If the telecommunications wanted to reduce their churn rate, they would need to look into **tenure** length, **contract** length (month-to-month specifically), and **total charges** to start off based on the top 3 variables of the random forest model. Perhaps the company needs to lower the pricing or give incentives for customers to stay longer such as discounted extra services. While there may be some other indicators, it is a good objective as a business to focus the larger and easier predictors to mitigate the loss.   
 
 Key Takeaways
 ---
