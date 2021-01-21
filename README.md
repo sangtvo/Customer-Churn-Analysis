@@ -507,7 +507,7 @@ The decision tree model's accuracy of 78.98% has decreased compared to the step-
 
 Random Forest
 ---
-Run the random forest.
+Run the random forest. As I adjusted the `mtry` parameter (number of variables randomly sampled as candidates at each split) and noticed the AUC was increasingly high in the ROC curve. The value 2 seemed much more ideal for `mtry`.
 ```r
 rf_model <- randomForest(Churn ~., data=train_d, ntree=50, mtry=2, method="rf", importance=TRUE)
 rf_model
@@ -526,11 +526,16 @@ No  3306 309  0.08547718
 Yes  682 627  0.52100840
 ```
 
-Variable importance plot.
+Run the variable importance plot to show the important drivers of churn.
 ```r
 varImpPlot(rf_model, sort=T, n.var=10, main='Top 10 Variables')
 ```
 ![Top10](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/Top10_Variables.png?raw=true)
+
+The first plot, mean decrease accuracy, is based on how much the accuracy decreases if the variable is excluded. 
+The second plot, mean decrease Gini, is based on the decrease of Gini impurity (probability of misclassifying an observation) if a variable is chosen to split a node. 
+
+*  Top 3 important predictors for churn are: tenure, contract, and total charges.
 
 Calculcate the confusion matrix.
 ```r
