@@ -194,7 +194,9 @@ Exploratory Data Analysis
 
 Logistic Regression
 ---
-The data frame is split 70% training and 30% testing data.
+(Binary) logistic regression is a common classification algorithm when the categorical response have only two possible outcomes, in this case, churn or no churn. This involves regressing the predictor variables on a binary outcome using a binomial link function.
+
+First, the data frame is split 70% training and 30% testing data.
 ```r
 set.seed(123)
 train_test_data <- createDataPartition(cdf$Churn,p=0.7,list=FALSE)
@@ -451,6 +453,8 @@ Between the two models, the best parsimonious model would be the step-wise model
 
 Decision Tree
 ---
+Decision tree is a supervised machine learning algorithm that uses a tree-like model of decisions. 
+
 Run the decision tree.
 ```r
 dtree_model <- rpart(Churn ~., data=train_d, method="class")
@@ -507,11 +511,14 @@ The decision tree model's accuracy of 78.98% has decreased compared to the step-
 
 Random Forest
 ---
-Run the random forest. As I adjusted the `mtry` parameter (number of variables randomly sampled as candidates at each split) and noticed the AUC was increasingly high in the ROC curve. The value 2 seemed much more ideal for `mtry`.
+Random forest is a supervised machine learning algorithm that builds a large number of decision trees and merges together to get a more accurate prediction.
+
+Run the random forest. 
 ```r
 rf_model <- randomForest(Churn ~., data=train_d, ntree=50, mtry=2, method="rf", importance=TRUE)
 rf_model
 ```
+* As I adjusted the `mtry` parameter (number of variables randomly sampled as candidates at each split) and noticed the AUC was increasingly high in the ROC curve. The value 2 seemed much more ideal for `mtry`.
 ```
 Call:
  randomForest(formula = Churn ~ ., data = train_d, ntree = 50,      mtry = 2, method = "rf", importance = TRUE) 
@@ -577,6 +584,7 @@ Area under the curve: 0.815
 ```
 ![rfROC](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/rf_roc.png?raw=true)
 
+The overall accuracy of the random forest model is 80.21% which performs better than the decision tree model and the step-wise logistic regression model.
 
 Solution
 ---
