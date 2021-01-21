@@ -7,23 +7,25 @@ Table of Contents
 2. [Summary](#summary)
 3. [Tech Stack](#tech-stack)
 4. [Data Preprocessing/Cleaning](#data-preprocessingcleaning)
-5. [Data Visualization](#data-visualization)
-6. [Data Analysis](#data-analysis)
-7. [Modeling](#modeling)
-8. [Solution](#solution)
-9. [Key Takeaways](#key-takeaways)
-10. [References](#references)
+5. [Exploratory Data Analysis](#exploratory-data-analysis)
+6. [Logistic Regression (Base)](#logistic-regression)
+7. [Step-wise Logistic Regression](#step-wise-logistic-regression)
+8. [Decision Tree](#decision-tree)
+9. [Random Forest](#random-forest)
+10. [Solution](#solution)
+11. [Key Takeaways](#key-takeaways)
 
-<a name="https://github.com/sangtvo/Seattle-PD-Funding-Eligibility#general-information"/>
-<a name="https://github.com/sangtvo/Seattle-PD-Funding-Eligibility#summary"/>
-<a name="https://github.com/sangtvo/Seattle-PD-Funding-Eligibility#tech-stack"/>
-<a name="https://github.com/sangtvo/Seattle-PD-Funding-Eligibility#data-preprocessingcleaning"/>
-<a name="https://github.com/sangtvo/Seattle-PD-Funding-Eligibility#data-visualization"/>
-<a name="https://github.com/sangtvo/Seattle-PD-Funding-Eligibility#data-analysis"/>
-<a name="https://github.com/sangtvo/Seattle-PD-Funding-Eligibility#modeling"/>
-<a name="https://github.com/sangtvo/Seattle-PD-Funding-Eligibility#solution"/>
-<a name="https://github.com/sangtvo/Seattle-PD-Funding-Eligibility#key-takeaways"/>
-<a name="https://github.com/sangtvo/Seattle-PD-Funding-Eligibility#references"/>
+<a name="https://github.com/sangtvo/Customer-Churn-Analysis#general-information"/>
+<a name="https://github.com/sangtvo/Customer-Churn-Analysis#summary"/>
+<a name="https://github.com/sangtvo/Customer-Churn-Analysis#tech-stack"/>
+<a name="https://github.com/sangtvo/Customer-Churn-Analysis#data-preprocessingcleaning"/>
+<a name="https://github.com/sangtvo/Customer-Churn-Analysis#exploratory-data-analysis"/>
+<a name="https://github.com/sangtvo/Customer-Churn-Analysis#logistic-regression"/>
+<a name="https://github.com/sangtvo/Customer-Churn-Analysis#step-wise-logistic-regression"/>
+<a name="https://github.com/sangtvo/Customer-Churn-Analysis#decision-tree"/>
+<a name="https://github.com/sangtvo/Customer-Churn-Analysis#random-forest"/>
+<a name="https://github.com/sangtvo/Customer-Churn-Analysis#solution"/>
+<a name="https://github.com/sangtvo/Customer-Churn-Analysis#key-takeaways"/>
 
 General Information
 ---
@@ -130,7 +132,7 @@ summary(cdf)
  Max.   :118.75   Max.   :8684.8             
 ```
 
-For the full notebook, please check out Customer Churn Analysis.Rmd
+**For the full notebook, please check out Customer Churn Analysis.Rmd or html file in the "code" folder.**
 
 Exploratory Data Analysis
 ---
@@ -394,7 +396,7 @@ PaymentMethodCredit card (automatic)        PaymentMethodElectronic check       
                            20.728399 
 ```
 
-Remove VIF > 10 and re-run the step-wise logistic regression model. In addition, I manually remove the least significant variables with the final output (see R markdown for full code):
+Remove VIF > 10 and re-run the step-wise logistic regression model. I also manually removed the remaining least significant variables as another step-wise process (see R markdown/html for full code):
 ```
 Call:
 glm(formula = Churn ~ tenure + InternetService + OnlineSecurity + 

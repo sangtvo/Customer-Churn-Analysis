@@ -1,0 +1,382 @@
+---
+title: "Customer Churn Analysis"
+output: html_notebook
+---
+
+```{r}
+# Importing libraries
+library(plyr)
+library(tidyverse)
+library(lattice)
+library(caret)
+library(ggplot2)
+library(cowplot)
+library(ggcorrplot)
+library(RColorBrewer)
+library(pROC)
+library(rpart)
+library(rpart.plot)
+library(randomForest)
+```
+
+
+```{r}
+# Read the data file and import it as a data frame
+df <- read.csv("churn.csv")
+
+# Examining the data
+head(df)
+```
+
+
+```{r}
+# Examining the structure of the data
+str(df)
+```
+
+
+```{r}
+# Checking for missing data
+sapply(df, function(x) sum(is.na(x)))
+```
+
+```{r}
+# Percentage of missing values on TotalCharges column - 0.16%
+sum(is.na(df$TotalCharges))/nrow(df)
+```
+
+```{r}
+# Creates a new data frame without missing values
+cdf <- na.omit(df)
+```
+
+```{r}
+# Removing customerID variable since it is not needed
+cdf$customerID <- NULL
+```
+
+```{r}
+# Recode categorical variables
+cdf$SeniorCitizen <- as.factor(mapvalues(cdf$SeniorCitizen, from=c("0","1"), to=c("No", "Yes")))
+cdf$MultipleLines <- as.factor(mapvalues(cdf$MultipleLines, from=c("No phone service"), to=c("No")))
+
+for (i in 9:14){
+  cdf[,i] <- as.factor(mapvalues(cdf[,i], from=c("No internet service"), to=c("No")))
+}
+
+cdf[, 'Churn'] <- as.factor(cdf[, 'Churn'])
+```
+
+```{r}
+summary(cdf)
+```
+
+```{r}
+# Univariate bar charts
+plot_grid(ggplot(cdf, aes(x=gender)) + geom_bar(position=position_dodge(), fill="#00AFBB") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5), 
+          ggplot(cdf, aes(x=SeniorCitizen)) + geom_bar(position=position_dodge(), fill="#00AFBB") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5), 
+          ggplot(cdf, aes(x=Partner)) + geom_bar(position=position_dodge(), fill="#00AFBB") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5), 
+          ggplot(cdf, aes(x=Dependents)) + geom_bar(position=position_dodge(), fill="#00AFBB") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5),
+          ggplot(cdf, aes(x=PhoneService)) + geom_bar(position=position_dodge(), fill="#00AFBB") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5),
+          ggplot(cdf, aes(x=MultipleLines)) + geom_bar(position=position_dodge(), fill="#00AFBB") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5)
+          ) 
+
+
+plot_grid(ggplot(cdf, aes(x=InternetService)) + geom_bar(position=position_dodge(), fill="#00AFBB") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5), 
+          ggplot(cdf, aes(x=OnlineSecurity)) + geom_bar(position=position_dodge(), fill="#00AFBB") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5), 
+          ggplot(cdf, aes(x=OnlineBackup)) + geom_bar(position=position_dodge(), fill="#00AFBB") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5), 
+          ggplot(cdf, aes(x=DeviceProtection)) + geom_bar(position=position_dodge(), fill="#00AFBB") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5),
+          ggplot(cdf, aes(x=TechSupport)) + geom_bar(position=position_dodge(), fill="#00AFBB") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5),
+          ggplot(cdf, aes(x=StreamingTV)) + geom_bar(position=position_dodge(), fill="#00AFBB") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5)
+          ) 
+
+plot_grid(ggplot(cdf, aes(x=StreamingMovies)) + geom_bar(position=position_dodge(), fill="#00AFBB") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5), 
+          ggplot(cdf, aes(x=Contract)) + geom_bar(position=position_dodge(), fill="#00AFBB") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5), 
+          ggplot(cdf, aes(x=PaperlessBilling)) + geom_bar(position=position_dodge(), fill="#00AFBB") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5), 
+          ggplot(cdf, aes(x=Churn)) + geom_bar(position=position_dodge(), fill="#E7B800") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5)
+          ) 
+
+plot_grid(ggplot(cdf, aes(x=PaymentMethod)) + geom_bar(position=position_dodge(), fill="#00AFBB") + geom_text(aes(y = ..count.. -200, 
+                                                                  label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                   size = 3, position = position_dodge(.8), vjust=.5) 
+          ) 
+```
+
+```{r}
+#Bivariate bar charts with respect to "Churn"
+plot_grid(ggplot(cdf, aes(x=gender, fill=Churn)) + geom_bar() + geom_text(aes(y = ..count.. -200, 
+                                                                label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                position = position_dodge(.1), size = 3),
+          ggplot(cdf, aes(x=SeniorCitizen, fill=Churn)) + geom_bar() + geom_text(aes(y = ..count.. -200, 
+                                                                label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                position = position_dodge(.1), size = 3),
+          ggplot(cdf, aes(x=Partner, fill=Churn)) + geom_bar() + geom_text(aes(y = ..count.. -200, 
+                                                                label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                position = position_dodge(.1), size = 3),
+          ggplot(cdf, aes(x=Dependents, fill=Churn)) + geom_bar() + geom_text(aes(y = ..count.. -200, 
+                                                                label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                position = position_dodge(.1), size = 3)
+          )
+
+plot_grid(ggplot(cdf, aes(x=PhoneService, fill=Churn)) + geom_bar() + geom_text(aes(y = ..count.. -200, 
+                                                                label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                position = position_dodge(.1), size = 3),
+          ggplot(cdf, aes(x=MultipleLines, fill=Churn)) + geom_bar() + geom_text(aes(y = ..count.. -200, 
+                                                                label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                position = position_dodge(.1), size = 3),
+          ggplot(cdf, aes(x=InternetService, fill=Churn)) + geom_bar() + geom_text(aes(y = ..count.. -200, 
+                                                                label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                position = position_dodge(.1), size = 3),
+          ggplot(cdf, aes(x=OnlineSecurity, fill=Churn)) + geom_bar() + geom_text(aes(y = ..count.. -200, 
+                                                                label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                position = position_dodge(.1), size = 3)
+          )
+
+plot_grid(ggplot(cdf, aes(x=OnlineBackup, fill=Churn)) + geom_bar() + geom_text(aes(y = ..count.. -200, 
+                                                                label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                position = position_dodge(.1), size = 3),
+          ggplot(cdf, aes(x=DeviceProtection, fill=Churn)) + geom_bar() + geom_text(aes(y = ..count.. -200, 
+                                                                label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                position = position_dodge(.1), size = 3),
+          ggplot(cdf, aes(x=TechSupport, fill=Churn)) + geom_bar() + geom_text(aes(y = ..count.. -200, 
+                                                                label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                position = position_dodge(.1), size = 3),
+          ggplot(cdf, aes(x=StreamingTV, fill=Churn)) + geom_bar() + geom_text(aes(y = ..count.. -200, 
+                                                                label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                position = position_dodge(.1), size = 3)
+          )
+
+plot_grid(ggplot(cdf, aes(x=StreamingMovies, fill=Churn)) + geom_bar() + geom_text(aes(y = ..count.. -200, 
+                                                                label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                position = position_dodge(.1), size = 3),
+          ggplot(cdf, aes(x=Contract, fill=Churn)) + geom_bar() + geom_text(aes(y = ..count.. -200, 
+                                                                label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                position = position_dodge(.1), size = 3),
+          ggplot(cdf, aes(x=PaperlessBilling, fill=Churn)) + geom_bar() + geom_text(aes(y = ..count.. -200, 
+                                                                label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                position = position_dodge(.1), size = 3)
+          )
+
+plot_grid(ggplot(cdf, aes(x=PaymentMethod, fill=Churn)) + geom_bar() + geom_text(aes(y = ..count.. -200, 
+                                                                label = paste0(round(prop.table(..count..),4) * 100, '%')), stat = 'count', 
+                                                                position = position_dodge(.1), size = 3, vjust=-.5)
+          )
+```
+
+```{r}
+# Distribution for continuous variables
+ggplot(cdf, aes(tenure, color = Churn)) + geom_freqpoly(binwidth = 5, size = 1.5)
+ggplot(cdf, aes(MonthlyCharges, color = Churn)) + geom_freqpoly(binwidth = 5, size = 1.5)
+ggplot(cdf, aes(TotalCharges, color = Churn)) + geom_freqpoly(binwidth = 200, size = 1.5)
+```
+
+```{r}
+# Correlation of continuous variables
+corr <- round(cor(cdf[,c("tenure", "MonthlyCharges", "TotalCharges")]), 1)
+
+ggcorrplot(corr, col = brewer.pal(n = 5, name = "RdBu"), title = "Correlation of Continuous Variables")
+```
+
+```{r}
+# Checking for outliers for continuous variables
+ggplot(cdf, aes(x=tenure)) + geom_boxplot(color="#000000", fill="#FC4E07", size=1)
+ggplot(cdf, aes(x=TotalCharges)) + geom_boxplot(color="#000000", fill="#E7B800", size=1)
+ggplot(cdf, aes(x=MonthlyCharges)) + geom_boxplot(color="#000000", fill="#00AFBB", size=1)
+```
+
+```{r}
+# Splitting the data
+set.seed(123)
+train_test_data <- createDataPartition(cdf$Churn,p=0.7,list=FALSE)
+train_d <- cdf[train_test_data,]
+test_d <- cdf[-train_test_data,]
+```
+
+```{r}
+# Logistic Regression Analysis
+lr_model <- glm(Churn ~., data=train_d, family=binomial(link='logit'))
+summary(lr_model)
+```
+
+```{r}
+# Confusion Matrix
+lr_prob1 <- predict(lr_model, test_d, type="response")
+lr_pred1 <- ifelse(lr_prob1 > 0.5,"Yes","No")
+
+table(Predicted=lr_pred1, Actual=test_d$Churn)
+```
+
+```{r}
+# Calculcate accuracy for logistic regression
+lr_prob2 <- predict(lr_model, train_d, type="response")
+lr_pred2 <- ifelse(lr_prob2 > 0.5,"Yes","No")
+lr_tab1 <- table(Predicted = lr_pred2, Actual = train_d$Churn)
+lr_tab2 <- table(Predicted = lr_pred1, Actual = test_d$Churn)
+lr_accuracy <- sum(diag(lr_tab2))/sum(lr_tab2)
+lr_accuracy
+```
+
+```{r}
+# Receiver Operating Characteristic (ROC) Curve 
+lr_roc <- roc(train_d$Churn, lr_prob2)
+plot(lr_roc, col='Blue', main="ROC Curve")
+auc(lr_roc)
+```
+
+
+```{r}
+# Step-wise Method
+lrstep_model <- MASS::stepAIC(lr_model, trace=0)
+summary(lrstep_model)
+```
+
+```{r}
+# Checking variance inflation factor for multicollinearity
+rms::vif(lrstep_model)
+```
+
+```{r}
+# Removing VIF > 10
+lrstep_model2 <- glm(Churn ~ SeniorCitizen + Partner + tenure + MultipleLines + 
+    InternetService + OnlineSecurity + StreamingTV + StreamingMovies + 
+    Contract + PaperlessBilling + PaymentMethod, data=train_d, family=binomial(link='logit'))
+summary(lrstep_model2)
+rms::vif(lrstep_model2)
+```
+
+
+```{r}
+# Removing least significant variables
+lrstep_model3 <- glm(Churn ~ tenure + 
+    InternetService + OnlineSecurity + StreamingTV + StreamingMovies + 
+    Contract + PaperlessBilling, data=train_d, family=binomial(link='logit'))
+summary(lrstep_model3)
+rms::vif(lrstep_model3)
+```
+
+
+```{r}
+# Confusion Matrix for step-wise logistic regression model
+lrstep_prob1 <- predict(lrstep_model3, test_d, type="response")
+lrstep_pred1 <- ifelse(lrstep_prob1 > 0.5,"Yes","No")
+
+table(Predicted=lrstep_pred1, Actual=test_d$Churn)
+```
+
+```{r}
+# Calculate accuracy for step-wise logistic regression model
+lrstep_prob2 <- predict(lrstep_model3, train_d, type="response")
+lrstep_pred2 <- ifelse(lrstep_prob2 > 0.5,"Yes","No")
+lrstep_tab1 <- table(Predicted = lrstep_pred2, Actual = train_d$Churn)
+lrstep_tab2 <- table(Predicted = lrstep_pred1, Actual = test_d$Churn)
+lrstep_accuracy <- sum(diag(lrstep_tab2))/sum(lrstep_tab2)
+lrstep_accuracy
+```
+
+```{r}
+# Receiver Operating Characteristic (ROC) Curve 
+s_roc <- roc(train_d$Churn, lrstep_prob2)
+plot(s_roc, col='Blue', main="ROC Curve")
+auc(s_roc)
+```
+
+
+```{r}
+# Decision Tree Analysis
+dtree_model <- rpart(Churn ~., data=train_d, method="class")
+rpart.plot(dtree_model)
+
+```
+
+```{r}
+# Confusion matrix for decision tree
+dtree_prob1 <- predict(dtree_model, test_d)
+dtree_pred1 <- ifelse(dtree_prob1[,2] > 0.5, "Yes", "No")
+table(Predicted=dtree_pred1, Actual=test_d$Churn)
+```
+
+```{r}
+# Calculcate accuracy
+dtree_prob2 <- predict(dtree_model, train_d)
+dtree_pred2 <- ifelse(dtree_prob2[,2] > 0.5,"Yes","No")
+dtree_tab1 <- table(Predicted=dtree_pred2, Actual=train_d$Churn)
+dtree_tab2 <- table(Predicte =dtree_pred1, Actual=test_d$Churn)
+dtree_accuracy <- sum(diag(dtree_tab2))/sum(dtree_tab2)
+dtree_accuracy
+```
+
+```{r}
+# Receiver Operating Characteristic (ROC) Curve 
+dtree_roc <- roc(train_d$Churn, dtree_prob2[,2])
+plot(dtree_roc, col='Blue', main="ROC Curve")
+auc(dtree_roc)
+```
+
+```{r}
+# Random Forest Analysis
+rf_model <- randomForest(Churn ~., data=train_d, ntree=50, mtry=2, method="rf", importance=TRUE)
+
+rf_model
+```
+
+```{r}
+# Variable importance from random forest model
+varImpPlot(rf_model, sort=T, n.var=10, main='Top 10 Variables')
+```
+
+```{r}
+# Confusion matrix for random forest
+rf_pred1 <- predict(rf_model, test_d)
+table(Predicted=rf_pred1, Actual=test_d$Churn)
+```
+
+```{r}
+# Calculate accuracy
+rf_prob2 <- predict(rf_model, train_d)
+rf_pred2 <- ifelse(as.numeric(rf_prob2) > 0.5,"Yes","No")
+rf_tab1 <- table(Predicted=rf_pred2, Actual=train_d$Churn)
+rf_tab2 <- table(Predicted=rf_pred1, Actual=test_d$Churn)
+rf_accuracy <- sum(diag(rf_tab2))/sum(rf_tab2)
+rf_accuracy
+```
+
+```{r}
+# Receiver Operating Characteristic (ROC) Curve 
+rf_roc <- roc(train_d$Churn, predictor=as.numeric(rf_prob2))
+plot(rf_roc, col='Blue', main="ROC Curve")
+auc(rf_roc)
+```
+
+
