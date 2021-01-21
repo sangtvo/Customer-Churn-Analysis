@@ -275,6 +275,10 @@ Predicted   No  Yes
       No    TN  FN
       Yes   FP  TP
 ```
+* TP = true positive; cases we predicted they churned and indeed churned.
+* TN = true negative; cases we predicted they did not churn and did not churn.
+* FP = false positive (type I error); cases we predicted they did churn, but did not actually churned.
+* FN = false negative (type II error); cases we predicted they did not churn, but they actually churned.
 ```
 Specificity = TN/(TN + FP)
 Sensitivity = TP / (FN + TP)
