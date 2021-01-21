@@ -588,7 +588,6 @@ The overall accuracy of the random forest model is 80.21% which performs better 
 
 Solution
 ---
-
 MODELS | (Base) Logistic Regression |  Step-wise Logistic Regression | Decision Tree | Random Forest 
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 Specificity | 0.8947 | 0.8953 | 0.8940 | 0.9147
@@ -598,15 +597,16 @@ Sensitivity | 0.5910 | 0.5428 | 0.5017 | 0.4910
 AUC | 0.8446 | 0.8377 | 0.8125 | 0.8150
 Accuracy | 81.40% | 80.17% | 78.98% | 80.21%
 
+* The best model is the **random forest model** with an overall accuracy of 80.21% with an area under the curve of 81.50% meaning the model will correctly predict churn 80.21% of the time and there is a 81.50% chance that the model can distinguish between positive (churn) and negative (no churn) classes. 
+
+In a business perspective, it is more fitting to tackle the most important variables that causes customers to leaves. If the telecommunications wanted to reduce their churn rate, they would need to look into tenure length, contract length (month-to-month specifically), and total charges to start off based on the top 3 variables of the random forest model. Perhaps the company needs to lower the pricing or give incentives for customers to stay longer such as discounted extra services. While there may be some other minor indicators, it is a good objective as a business to focus the larger and easier predictors to mitigate the loss.   
 
 Key Takeaways
 ---
-* The number of incidents on Sunday (March 27, 2016) is 2x as high compared to Friday and Saturday that same weekend due to Easter Sunday.
-* The top 3 incidents are disturbances, traffic related calls, and suspicious circumstances which are 3x more common than other incidents.
-* At least 2 officers arrive onsite and show up more often in the outskirts of downtown Seattle. 
-* The W zone has the lowest incidents reported due to Burley and Bethey districts having less population and more deserted, but the highest mean of officers onsite (2.324).
-* The H zone which is downtown Seattle has the highest reported incidents, but the lowest mean of officers onsite of 1.32. 
-
-References
----
-Balk, G. (2019, April 4). Is Seattle 'dying'? Crime rates tell a different story. Retrieved June 12, 2020, from http://www.seattletimes.com/seattle-news/data/is-seattle-dying-not-if-you-look-crime-rates-from-the-80s-and-90s/
+* Based on the data, the churn rate of the data is 26.58% and more than half of the data are month-to-month contract customers. 
+  * In turn, month to month churn rate is extremely high compared to 1-2 year contracts.
+* ~$20-25 monthly rate is an extremely common charge for most customers.
+* Tenure, contract, and internet service are important predictors for churn under step-wise logistic regression and decision tree models.
+* Total charges is an important variable for random forest model, but not step-wise logistic regression and decision tree models.
+  * Top 3 variables that are important for churn rate are tenure, contract, and total charges.
+* Random forest model outperforms the other models with an overall accuracy of 80.21%.
