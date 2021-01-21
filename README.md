@@ -589,7 +589,7 @@ The overall accuracy of the random forest model is 80.21% which performs better 
 Solution
 ---
 
- | (Base) Logistic Regression |  Step-wise Logistic Regression | Decision Tree | Random Forest 
+MODELS | (Base) Logistic Regression |  Step-wise Logistic Regression | Decision Tree | Random Forest 
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 Specificity | 0.8947 | 0.8953 | 0.8940 | 0.9147
 Sensitivity | 0.5910 | 0.5428 | 0.5017 | 0.4910
