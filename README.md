@@ -449,7 +449,7 @@ Logistic Regression (Base) ROC Curve             |  Step-wise Logistic Regressio
 AUC = 84.46% | AUC = 83.77%
 Accuracy = 81.40% | Accuracy = 80.17%
 
-Between the two models, the best parsimonious model would be the step-wise model despite a lower accuracy than the base model. This model is preferrable since it only includes the least variables that are highly significant with a lower AIC score. 
+Between the two models, the most parsimonious model would be the step-wise model despite a lower accuracy than the base model. This model is preferrable since it only includes the least variables that are highly significant with a lower AIC score. 
 
 Decision Tree
 ---
@@ -588,7 +588,16 @@ The overall accuracy of the random forest model is 80.21% which performs better 
 
 Solution
 ---
-Since the Seattle PD is not eligible for funding due to a mean of 1.889, the department should focus on zones with less average officer per site and zones with the largest reported incidents. By targeting zones with average officers that have a mean of 2 or less and reach a mean score of 2+, it is possible it will bring the overall mean to 2.5. If it is not reached still, then targeting the highest reported incidents zone can also bring it up by mandating 3 officers per incident. If the police department is understaffed, that would mean that officers are working over-time and arriving at multiple scenes to keep up with the incoming calls. This inefficiency will continue to drive down (or similar amount) the mean of officers at scene and the department will never reach that 2.5 threshold to receive any funding in future years. If the police department hired a human resources analyst, this person can detect how many officers are needed and analyze their work schedules to be more effective in order to meet demand.
+
+ | (Base) Logistic Regression |  Step-wise Logistic Regression | Decision Tree | Random Forest 
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+Specificity | 0.8947 | 0.8953 | 0.8940 | 0.9147
+Sensitivity | 0.5910 | 0.5428 | 0.5017 | 0.4910
+-PV | 0.8581 | 0.8440 | 0.8322 | 0.8324
++PV | 0.6700 | 0.6423 | 0.6314 | 0.6756
+AUC | 0.8446 | 0.8377 | 0.8125 | 0.8150
+Accuracy | 81.40% | 80.17% | 78.98% | 80.21%
+
 
 Key Takeaways
 ---
