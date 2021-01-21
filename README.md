@@ -458,6 +458,11 @@ rpart.plot(dtree_model)
 ```
 ![Dtree](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/dtree.png?raw=true)
 
+* The root node, contract, shows that contracts that month-to-month contracts are more likely to churn compared to contracts that are 1-2 years.
+* Customers with DSL as internet service service are less likely to churn.
+* Customers that have no internet service are less likely to churn.
+* Customers that stayed with the company for less than 14 months are more likely to churn.
+
 ```r
 dtree_prob1 <- predict(dtree_model, test_d)
 dtree_pred1 <- ifelse(dtree_prob1[,2] > 0.5, "Yes", "No")
@@ -498,6 +503,7 @@ Area under the curve: 0.8125
 ```
 ![DtreeROC](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/images/dtree_roc.png?raw=true)
 
+The decision tree model's accuracy of 78.98% has decreased compared to the step-wise logistic regression model, 80.17%. This model can correctly predict the churn rate for customers 78.98% of the time. 
 
 Random Forest
 ---
