@@ -132,7 +132,7 @@ summary(cdf)
  Max.   :118.75   Max.   :8684.8             
 ```
 
-**For the full notebook, please check out Customer Churn Analysis.Rmd or html file in the "code" folder.**
+**For the full code, please check out [Customer Churn Analysis.Rmd](https://github.com/sangtvo/Customer-Churn-Analysis/blob/main/code/Customer%20Churn%20Analysis.Rmd)**
 
 Exploratory Data Analysis
 ---
