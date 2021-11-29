@@ -29,7 +29,7 @@ Table of Contents
 
 General Information
 ---
-The project is part of a graduate course (_Data Mining and Analytics II_) at Western Governor's University. The raw data set contains 7,043 observations and 21 features. 
+The raw data set contains 7,043 observations and 21 features. 
 
 **To expand the project even further (originally binary logistic regression), decision trees and random forest analysis are added.**
 
