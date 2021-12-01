@@ -1,4 +1,4 @@
-# Project 02: Customer Churn Analysis
+# Customer Churn Analysis
 > This study analyzes the customer data to identify why customers are leaving and the potential indicators that are causing them to leave. The data is derived from a telecommunications company through Kaggle and will be using three different predictive modeling: (1) binary logistic regression (2) decision trees and (3) random forest.
 
 Table of Contents
